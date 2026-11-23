@@ -47,17 +47,23 @@ Upload and activate [`wp-ui-mcp-bridge.zip`](./wp-plugin/wp-ui-mcp-bridge.zip) i
 
 ---
 
-## Step 3: Register the MCP Server in Antigravity IDE
+## Step 3: Register the MCP Server in Your IDE or Agent
 
-Add `wordpress-ui` to your global MCP configuration file at `C:\Users\Kelvin Odems\.gemini\config\mcp_config.json` (or via **Additional Options (...) → MCP Servers**):
+This MCP server uses the standard `@modelcontextprotocol/sdk` over `stdio`, so it works across **Antigravity, Cursor, OpenAI Codex, OpenCode, Claude Code, Windsurf, and VS Code**.
+
+You can run it either directly from GitHub via `npx -y github:KelvinOdems/wordpress-ui-mcp` (zero clone required) or from a local clone (`node /path/to/src/index.js`).
+
+### 1. Cursor, Antigravity, Claude Code, Claude Desktop & Windsurf
+Add to `.cursor/mcp.json` (Cursor), `~/.gemini/config/mcp_config.json` (Antigravity), `.mcp.json` (Claude Code), or `~/.codeium/windsurf/mcp_config.json` (Windsurf):
 
 ```json
 {
   "mcpServers": {
     "wordpress-ui": {
-      "command": "node",
+      "command": "npx",
       "args": [
-        "c:\\Users\\Kelvin Odems\\Downloads\\Wordpress mcp\\src\\index.js"
+        "-y",
+        "github:KelvinOdems/wordpress-ui-mcp"
       ],
       "env": {
         "WP_SITE_URL": "https://your-wordpress-site.com",
@@ -69,7 +75,64 @@ Add `wordpress-ui` to your global MCP configuration file at `C:\Users\Kelvin Ode
 }
 ```
 
-*(Alternatively, copy `.env.example` to `.env` inside this folder and fill in your credentials).*
+*(If running from a local clone instead of `npx`, set `"command": "node"` and `"args": ["/absolute/path/to/src/index.js"]`).*
+
+### 2. OpenAI Codex CLI (`~/.codex/config.toml`)
+```toml
+[mcp_servers.wordpress-ui]
+command = "npx"
+args = ["-y", "github:KelvinOdems/wordpress-ui-mcp"]
+
+[mcp_servers.wordpress-ui.env]
+WP_SITE_URL = "https://your-wordpress-site.com"
+WP_USERNAME = "your-admin-username"
+WP_APP_PASSWORD = "xxxx xxxx xxxx xxxx xxxx xxxx"
+```
+
+### 3. OpenCode (`opencode.json` or `~/.config/opencode/opencode.json`)
+```json
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "wordpress-ui": {
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "github:KelvinOdems/wordpress-ui-mcp"
+      ],
+      "environment": {
+        "WP_SITE_URL": "https://your-wordpress-site.com",
+        "WP_USERNAME": "your-admin-username",
+        "WP_APP_PASSWORD": "xxxx xxxx xxxx xxxx xxxx xxxx"
+      }
+    }
+  }
+}
+```
+
+### 4. VS Code (GitHub Copilot Agent Mode — `.vscode/mcp.json`)
+```json
+{
+  "servers": {
+    "wordpress-ui": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "github:KelvinOdems/wordpress-ui-mcp"
+      ],
+      "env": {
+        "WP_SITE_URL": "https://your-wordpress-site.com",
+        "WP_USERNAME": "your-admin-username",
+        "WP_APP_PASSWORD": "xxxx xxxx xxxx xxxx xxxx xxxx"
+      }
+    }
+  }
+}
+```
+
+*(Alternatively, when running locally, copy `.env.example` to `.env` inside this folder and fill in your credentials).*
 
 ---
 
