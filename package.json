@@ -1,0 +1,19 @@
+{
+  "name": "wordpress-ui-mcp",
+  "version": "1.0.0",
+  "description": "Full-control WordPress UI/UX MCP Server for AI Agents (Gutenberg Blocks, Global Styles / theme.json, Elementor/Bricks Meta, Custom CSS, and Theme File editing)",
+  "type": "module",
+  "main": "src/index.js",
+  "bin": {
+    "wordpress-ui-mcp": "./src/index.js"
+  },
+  "scripts": {
+    "start": "node src/index.js",
+    "check": "node --check src/index.js && node --check src/wp-client.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.11.0",
+    "dotenv": "^16.5.0",
+    "zod": "^3.24.2"
+  }
+}
